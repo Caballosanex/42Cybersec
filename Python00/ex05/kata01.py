@@ -18,4 +18,4 @@ kata = {
 }
 
 for key in kata:
-	print(key, "was created by", kata[key])
+    print(key, "was created by", kata[key])

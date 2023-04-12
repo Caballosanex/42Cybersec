@@ -15,13 +15,13 @@ import sys
 if len(sys.argv) != 3:
     print("2 Arguments Bro \n Us: python operations.py <n1> <n2> \n Exemple: \n \t python operations.py 10 3")
     sys.exit()
-    
+
 try:
-	A = int(sys.argv[1])
-	B = int(sys.argv[2])
+    A = int(sys.argv[1])
+    B = int(sys.argv[2])
 except ValueError:
-	print("Aixo no es un INT Bro")
-	sys.exit()
+    print("Aixo no es un INT Bro")
+    sys.exit()
 
 sum_result = A + B
 diff_result = A - B
