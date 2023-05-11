@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/08 19:31:55 by alexsanc          #+#    #+#              #
-#    Updated: 2023/05/10 15:42:00 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/05/11 15:50:56 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,50 +21,57 @@ import time
 
 def parse_args():
     """Parses command-line arguments."""
-    parser = argparse.ArgumentParser(description="A one-time password generar based on the RFC6238 standard.")
+    parser = argparse.ArgumentParser(
+        description="A one-time password generator based on the RFC6238 standard.")
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("-g", metavar="KEY_FILE", help="generate a new secret key and save it to KEY_FILE")
-    group.add_argument("-k", metavar="KEY_FILE", help="generate a new one-time password using the secret key stored in KEY_FILE")
+    group.add_argument("-g", metavar="KEY_FILE",
+                       help="generate a new secret key and save it to KEY_FILE")
+    group.add_argument("-k", metavar="KEY_FILE",
+                       help="generate a new one-time password using the secret key stored in KEY_FILE")
     args = parser.parse_args()
 
     if args.g:
-        key = args.g
-        with open(key, 'r') as f:
+        key = base64.b32encode(
+            hmac.new(b"", digestmod=hashlib.sha1).digest()).decode()
+        with open(args.g, 'w') as f:
+            f.write(key)
+            print(f"Secret key was successfully saved in {args.g}.")
+    elif args.k:
+        with open(args.k, 'r') as f:
             key_data = f.read().strip()
-            if len(key_data) != 64:
-                raise argparse.ArgumentTypeError("Invalid key length. The key must be 64 hexadecimal characters.")
-        return args
+            if len(key_data) != 32:
+                raise argparse.ArgumentTypeError(
+                    "Invalid key length. The key must be 32 characters.")
+            key = base64.b32decode(key_data.encode())
+            otp = generate_otp(key)
+            print(otp)
     else:
-        return args
+        raise argparse.ArgumentTypeError("Either -g or -k must be specified.")
 
-
-def generate_key(filename):
-    """Generates a new secret key and saves it to a file."""
-    key = base64.b32encode(hmac.new(b"", digestmod=hashlib.sha1).digest()).decode()
-    with open(filename, 'w') as f:
-        f.write(key)
-        print(f"Secret key was successfully saved in {filename}.")
 
 def generate_otp(key):
     """Generates a new one-time password."""
-    counter = int(time.time()) // 30
-    hmac_digest = hmac.new(key, struct.pack(">Q", counter), hashlib.sha1).digest()
+    counter = int(time.time() / 30)
+    print(counter)
+    counter = struct.pack(">Q", counter)
+    print(counter)
+    hmac_digest = hmac.new(key, counter, hashlib.sha1).digest()
+    print(hmac_digest)
     offset = hmac_digest[-1] & 0xf
-    truncated_hash = (struct.unpack(">I", hmac_digest[offset:offset+4])[0] & 0x7fffffff) % 1000000
+    print(offset)
+    truncated_hash = struct.unpack(">I", hmac_digest[offset:offset+4])
+    print(truncated_hash)
+    truncated_hash = truncated_hash[0] & 0x7fffffff
+    print(truncated_hash)
+    truncated_hash = truncated_hash % 1000000
+    print(truncated_hash)
     return f"{truncated_hash:06d}"
 
 
 def main():
     """Main function."""
     try:
-        args = parse_args()
-        if args.g:
-            generate_key(args.g)
-        elif args.k:
-            with open(args.k, 'rb') as f:
-                key = f.read()
-                otp = generate_otp(key)
-                print(otp)
+        parse_args()
     except argparse.ArgumentTypeError as e:
         print(f"Error: {str(e)}", file=sys.stderr)
         sys.exit(1)
@@ -75,3 +82,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# USAGE:
+# $ openssl rand -hex 32 > key.hex
+# $ python3 ft_otp.py -g key.hex
+# $ python3 ft_otp.py -k key.hex
