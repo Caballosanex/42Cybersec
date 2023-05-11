@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/08 19:31:55 by alexsanc          #+#    #+#              #
-#    Updated: 2023/05/09 07:17:51 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/05/10 15:42:00 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ import time
 
 def parse_args():
     """Parses command-line arguments."""
-    parser = argparse.ArgumentParser(description="A one-time password generator based on the RFC6238 standard.")
+    parser = argparse.ArgumentParser(description="A one-time password generar based on the RFC6238 standard.")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("-g", metavar="KEY_FILE", help="generate a new secret key and save it to KEY_FILE")
     group.add_argument("-k", metavar="KEY_FILE", help="generate a new one-time password using the secret key stored in KEY_FILE")
