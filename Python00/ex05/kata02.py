@@ -6,15 +6,15 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/11 19:53:58 by alexsanc          #+#    #+#              #
-#    Updated: 2023/04/17 15:08:40 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/04/11 19:53:58 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Put this at the top of your kata02.py file
-kata = (20, 9, 5, 3, 0)
+kata = (2019, 9, 25, 3, 30)
 
 print(
-    "{:04d}/{:02d}/{:d} {:02d}:{:02d}".format(kata[1], kata[2], kata[0], kata[3], kata[4]))
+    "{:02d}/{:02d}/{:d} {:02d}:{:02d}".format(kata[1], kata[2], kata[0], kata[3], kata[4]))
 
 """ kata es una tupla que contiene cinco valores enteros (2019, 9, 25, 3, 30). Las tuplas son secuencias inmutables en Python, y cada elemento en la tupla representa un valor específico, como año, mes, día, hora y minuto, respectivamente.
 

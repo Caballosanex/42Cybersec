@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/14 13:55:50 by alexsanc          #+#    #+#              #
-#    Updated: 2023/04/17 15:27:45 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/04/14 14:08:25 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,14 +29,15 @@ while True:
         print("Goodbye! The secret number was", secret_number)
         break
 
-    num_trials += 1
-
     # check if the user's input is a valid integer
     try:
         guess = int(user_input)
     except ValueError:
         print("Invalid input. Please enter an integer between 1 and 99.")
         continue
+
+    # increment the number of trials
+    num_trials += 1
 
     # check if the user's guess is correct
     if guess == secret_number:
