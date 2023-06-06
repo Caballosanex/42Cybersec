@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 18:53:00 by alexsanc          #+#    #+#              #
-#    Updated: 2023/06/06 21:34:27 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/06/06 21:39:39 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -109,6 +109,8 @@ def tratar_fechas(inicio, final):
                     exit()
 
     except ValueError:
+    # Tambien podemos usar assert para comprobar que las fechas son válidas.
+	# assert inicio < final, "La fecha inicial es mayor que la fecha final."
         print("Formato invalido. El formato debe ser DD-MM-AAAA.")
         exit()
 
