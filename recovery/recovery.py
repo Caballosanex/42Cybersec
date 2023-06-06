@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 18:53:00 by alexsanc          #+#    #+#              #
-#    Updated: 2023/06/06 21:31:17 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/06/06 21:34:27 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -108,7 +108,7 @@ def tratar_fechas(inicio, final):
 
                     exit()
 
-    except:
+    except ValueError:
         print("Formato invalido. El formato debe ser DD-MM-AAAA.")
         exit()
 
@@ -163,7 +163,7 @@ def cambios_registro(inicio, final):
                 # Añadir la fecha al conjunto de cambios.
                 cambios.add((fecha, clave))
 
-        except:
+        except OSError:
             pass
 
     return cambios
@@ -223,7 +223,7 @@ def archivos_temporales(inicio, final):
             if inicio <= fecha <= final:
                 archivos.add((fecha, archivo))
 
-        except:
+        except OSError:
             pass
 
     return archivos
@@ -283,7 +283,7 @@ def programas_instalados(inicio, final):
                 aplicaciones.add((fecha, nombre))
                 programas.remove(nombre)
 
-        except:
+        except OSError:
             pass
 
     # Devuelve los programas encontrados y los que no se sabe la fecha.
