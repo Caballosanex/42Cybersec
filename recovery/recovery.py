@@ -6,7 +6,7 @@
 #    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 18:53:00 by alexsanc          #+#    #+#              #
-#    Updated: 2023/06/06 21:39:39 by alexsanc         ###   ########.fr        #
+#    Updated: 2023/06/20 16:21:57 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ def leer_argumentos():
 
     return analizador.i, analizador.f
 # Esta nueva forma de realizar el programa es más eficiente, ya que se evita repetir código. Returnea la lista con los datos que se le pide.
+# Analizador.i es el argumento de inicio y analizador.f es el argumento de final.
 
 
 # Tratar las fechas recibidas. Si no se especifican, se toman por defecto. Si se especifican, se comprueba que son válidas.
@@ -109,8 +110,8 @@ def tratar_fechas(inicio, final):
                     exit()
 
     except ValueError:
-    # Tambien podemos usar assert para comprobar que las fechas son válidas.
-	# assert inicio < final, "La fecha inicial es mayor que la fecha final."
+        # Tambien podemos usar assert para comprobar que las fechas son válidas.
+        # assert inicio < final, "La fecha inicial es mayor que la fecha final."
         print("Formato invalido. El formato debe ser DD-MM-AAAA.")
         exit()
 
