@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    spider.py                                          :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: alexsanc <alexsanc@student.42barcel>       +#+  +:+       +#+         #
+#    By: alexsanc <2024_alex.sanchez@iticbcn.cat    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/27 14:03:32 by alexsanc          #+#    #+#              #
-#    Updated: 2023/05/03 17:05:13 by alexsanc         ###   ########.fr        #
+#    Updated: 2024/12/04 10:41:11 by alexsanc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,15 +21,24 @@ from bs4 import BeautifulSoup
 def download_image(image_url, path):
     try:
         response = requests.get(image_url)
+        if response.status_code == 200:
+            content_type = response.headers.get("Content-Type")
+            if content_type and "image" in content_type:  # Ensure it is an image
+                ext = os.path.splitext(image_url)[1]
+                if not ext:  # If no extension, default to `.webp`
+                    ext = ".webp"
+                file_name = os.path.basename(image_url) or f"image{ext}"
+                file_path = os.path.join(path, file_name)
+                with open(file_path, 'wb') as f:
+                    f.write(response.content)
+                    print(f"Downloaded image: {image_url}")
+            else:
+                print(f"Skipped non-image URL: {image_url}")
+        else:
+            print(f"Error downloading image: {
+                  response.status_code} - {image_url}")
     except requests.exceptions.RequestException as e:
         print(f"Error downloading image: {e}")
-        return
-    if response.status_code == 200:
-        with open(os.path.join(path, os.path.basename(image_url)), 'wb') as f:
-            f.write(response.content)
-            print(f"Downloaded image: {image_url}")
-    else:
-        print(f"Error downloading image: {response.status_code}")
 
 def download_images(url, path, extensions, depth):
     """Recursively downloads all images from a URL and saves them to a local directory."""
@@ -89,7 +98,7 @@ def main():
             os.makedirs(args.path)
         else:
             return
-    extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".docx", ".pdf"]
+    extensions = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".docx", ".pdf", ".webp"]
     download_images(args.url, args.path, extensions,
                     args.depth if args.recursive else 1)
     
